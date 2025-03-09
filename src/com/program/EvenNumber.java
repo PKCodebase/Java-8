@@ -11,7 +11,7 @@ public class EvenNumber {
                 .filter(n->n%2==0).
                 forEach(n->System.out.print(n+" "));
 
-        
+
         System.out.println();
         System.out.println("-----------");
 
