@@ -8,6 +8,5 @@ public class ProductOfNumber {
         int product = mylist.stream()
                 .reduce(1,(a,b)->a*b);
         System.out.println(product);
-
     }
 }
