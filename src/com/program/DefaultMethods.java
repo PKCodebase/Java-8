@@ -14,7 +14,7 @@ interface A{
 //}
 
 
-//
+
 //class C implements A,B{
 //    public void display(){
 //        B.super.display();
