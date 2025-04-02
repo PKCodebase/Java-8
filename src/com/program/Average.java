@@ -2,6 +2,7 @@ package com.program;
 import java.util.List;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Average {
     public static void main(String[]args){
@@ -11,5 +12,12 @@ public class Average {
                            .average()
                            .orElse(0.0);
                   System.out.println("Average : " + avg);
+
+
+
+                  System.out.println("-----------");
+        double avg2 = mylist.stream()
+                .collect(Collectors.averagingDouble(Integer::doubleValue));
+        System.out.println("Average : " + avg2);
     }
 }
