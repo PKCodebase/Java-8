@@ -1,0 +1,306 @@
+**Core Java 8 Interview Questions:**
+
+✅ 1. Lambda Expressions
+➤ What is a lambda expression in Java 8?
+A lambda is a short way to write a method — especially useful for functional interfaces.
+
+➤ Syntax:
+
+(parameters) -> { body }
+
+➤ Example 1:
+
+Runnable r = () -> System.out.println("Hello");
+r.run();
+
+➤ Example 2:
+
+@FunctionalInterface
+interface Addable {
+    int add(int a, int b);
+}
+
+public class LambdaAddExample {
+    public static void main(String[] args) {
+
+        // Lambda expression to add two numbers
+        Addable sum = (a, b) -> a + b;
+
+        // Call the method
+        int result = sum.add(5, 7);
+        System.out.println("Sum is: " + result);
+    }
+}
+
+➤ How do lambda expressions reduce boilerplate code?
+
+No need to write full anonymous classes. Just focus on the logic.
+
+Before:
+
+new Thread(new Runnable() {
+    public void run() {
+        System.out.println("Running");
+    }
+}).start();
+
+
+With Lambda:
+new Thread(() -> System.out.println("Running")).start();
+
+➤ Can lambda expressions access local variables?
+Yes, but only final or effectively final (i.e., values that don’t change).
+
+✅ 2. Functional Interfaces
+➤ What is a functional interface?
+An interface with only one abstract method. It can have multiple default or static methods.
+
+java
+Copy
+Edit
+@FunctionalInterface
+interface Greeting {
+    void sayHello();
+}
+➤ Examples of built-in functional interfaces:
+
+Predicate<T> – returns boolean
+x -> x > 10
+
+Function<T, R> – input & output
+x -> x.length()
+
+
+Consumer<T> – takes input, returns nothing
+x -> System.out.println(x)
+
+Supplier<T> – gives output, no input
+() -> "Hello"
+
+
+➤ Custom example:
+
+@FunctionalInterface
+interface MyFunc {
+    int add(int a, int b);
+}
+
+✅ 3. Streams API
+➤ What is Streams API?
+✅ Stream API is a way to process a collection of elements such as like List,Set,Array.
+It is a functional and efficient way using methods like map, filter, collect, etc.
+
+➤ map() vs flatMap():
+map() transforms each element.
+
+flatMap() flattens a stream of streams.
+
+List<String> names = Arrays.asList("a", "b");
+names.stream().map(String::toUpperCase); // ["A", "B"]
+
+List<List<String>> list = Arrays.asList(Arrays.asList("a"), Arrays.asList("b"));
+list.stream().flatMap(List::stream); // ["a", "b"]
+➤ Intermediate vs Terminal operations:
+Intermediate: return a stream (e.g., map, filter)
+
+Terminal: end the stream (e.g., collect, forEach)
+
+➤ filter():
+Used to pick elements based on condition.
+
+java
+Copy
+Edit
+list.stream().filter(x -> x.startsWith("J"));
+➤ collect() and Collectors:
+Collects stream into list, set, map etc.
+
+java
+Copy
+Edit
+list.stream().collect(Collectors.toList());
+list.stream().collect(Collectors.toSet());
+list.stream().collect(Collectors.groupingBy(String::length));
+➤ Sequential vs Parallel streams:
+Sequential: one item at a time
+
+Parallel: multiple items in parallel (faster for large data but not always safe)
+
+➤ Stream vs Collection:
+Collection stores data.
+
+Stream processes data (can’t be reused after terminal op).
+
+✅ 4. Method References
+➤ What is a method reference?
+A shortcut to call a method using ::
+
+➤ Types:
+Static method: ClassName::staticMethod
+
+Instance method: object::method
+
+Constructor: ClassName::new
+
+List<String> list = Arrays.asList("A", "B");
+list.forEach(System.out::println);
+
+✅ 5. Optional Class
+➤ What is Optional?
+A container for nullable values, helps avoid NullPointerException.
+
+➤ Methods:
+java
+Copy
+Edit
+Optional.of("data");           // Not null
+Optional.empty();              // Empty optional
+Optional.ofNullable(data);     // Nullable
+➤ isPresent() vs ifPresent():
+isPresent() returns true/false
+
+ifPresent() runs logic if value exists
+
+
+Optional<String> name = Optional.of("John");
+name.ifPresent(System.out::println); // prints John
+✅ 6. Default and Static Methods in Interfaces
+➤ What are default methods?
+Methods in interfaces with body.
+
+java
+Copy
+Edit
+interface MyInterface {
+    default void show() {
+        System.out.println("Hello");
+    }
+}
+➤ Why introduced?
+To add new methods to interfaces without breaking old implementations.
+
+➤ Can interfaces have static methods?
+Yes, but they can’t be overridden.
+
+java
+Copy
+Edit
+interface MyInterface {
+    static void sayHi() {
+        System.out.println("Hi");
+    }
+}
+➤ Two interfaces with same default method?
+Yes, but class must override it to avoid conflict.
+
+✅ 7. Date and Time API (java.time)
+➤ How is it better?
+Immutable
+
+Thread-safe
+
+Clear API
+
+➤ Key Classes:
+java
+Copy
+Edit
+LocalDate.now();             // Only date
+LocalTime.now();             // Only time
+LocalDateTime.now();         // Date + Time
+ZonedDateTime.now();         // With timezone
+➤ Format/Parse:
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+String date = LocalDate.now().format(formatter);
+LocalDate parsed = LocalDate.parse("19-04-2025", formatter);
+✅ 8. Functional Programming Concepts
+➤ What is functional programming?
+Programming with functions as first-class citizens — functions can be passed around.
+
+➤ Higher-order functions?
+Functions that take or return other functions.
+
+java
+Copy
+Edit
+Function<Integer, Function<Integer, Integer>> add = x -> y -> x + y;
+System.out.println(add.apply(2).apply(3)); // 5
+➤ Immutability?
+Once created, can’t be changed. Helps avoid bugs in concurrent programs.
+
+✅ 9. Collectors and Grouping
+➤ groupingBy:
+Groups elements by some key.
+
+java
+Copy
+Edit
+Map<Integer, List<String>> result = 
+    list.stream().collect(Collectors.groupingBy(String::length));
+➤ partitioningBy:
+Splits elements into two groups (true/false).
+
+java
+Copy
+Edit
+Map<Boolean, List<String>> result = 
+    list.stream().collect(Collectors.partitioningBy(s -> s.startsWith("A")));
+➤ Max/Min:
+java
+Copy
+Edit
+list.stream().max(Comparator.comparing(String::length)).get();
+✅ 10. Performance and Internals
+➤ How do streams work?
+Internally, they use pipeline of operations, and only start processing on terminal ops.
+
+➤ When to use parallelStream()?
+Use it for large datasets when operations are independent and can run in parallel. Be careful with shared state.
+
+➤ Lazy evaluation:
+Streams do nothing until a terminal operation is called.
+
+java
+Copy
+Edit
+list.stream().filter(x -> {
+    System.out.println(x);
+    return true;
+});
+(prints nothing until forEach() is added)
+
+➤ Short-circuiting:
+Stops processing early — e.g., limit(), findFirst(), anyMatch().
+
+java
+Copy
+Edit
+list.stream().anyMatch(x -> x.startsWith("A")); // stops at first match
+
+✅ 11.
+map(): map is used to transform each element one by one  into stream.
+Example:
+List<String> names = Arrays.asList("john", "mary", "peter");
+
+// Convert each name to uppercase
+List<String> upperCaseNames = names.stream()
+                                  .map(String::toUpperCase)
+                                  .collect(Collectors.toList());
+
+System.out.println(upperCaseNames);
+
+
+flatMap():flatmap is used to transform flattens nested structures.
+Example:
+List<List<String>> nestedNames = Arrays.asList(
+    Arrays.asList("John", "Doe"),
+    Arrays.asList("Mary", "Jane"),
+    Arrays.asList("Peter", "Parker")
+);
+
+// Flatten the nested lists into a single list
+List<String> flatNames = nestedNames.stream()
+                                   .flatMap(Collection::stream)
+                                   .collect(Collectors.toList());
+
+System.out.println(flatNames); 
