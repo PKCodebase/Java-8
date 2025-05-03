@@ -10,7 +10,6 @@ public class Date {
         System.out.println(date);
         LocalTime time = LocalTime.now();
         System.out.println(time);
-
         LocalDateTime dateTime = LocalDateTime.now();
         System.out.println(dateTime);
     }
